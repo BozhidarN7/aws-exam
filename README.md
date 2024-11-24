@@ -22,6 +22,7 @@ This is a project fulfilling the regular exam assigment for the [AWS Essentials 
 
 - Public IPv4 address - [18.184.28.246](http://18.184.28.246/)
 - Public IPv4 DNS - https://ec2-18-184-28-246.eu-central-1.compute.amazonaws.com/
+- [How to disable cors in chrome](https://medium.com/@beligh.hamdi/run-chrome-browser-without-cors-872747142c61) - you will have to disable cors to for the API to work
 
 ## API Gateway Endpoints
 
