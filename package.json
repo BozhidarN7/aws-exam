@@ -10,7 +10,9 @@
     "test": "jest",
     "cdk": "cdk",
     "lint": "npx eslint .",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "prettier:fix": "npx prettier . --write",
+    "format": "npm run prettier:fix && npm run lint:fix"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
