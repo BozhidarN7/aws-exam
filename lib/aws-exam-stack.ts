@@ -39,7 +39,7 @@ export class AwsExamStack extends cdk.Stack {
     new Subscription(this, 'FilesSubscription', {
       topic: filesTopic,
       protocol: SubscriptionProtocol.EMAIL,
-      endpoint: 'bojonemski@gmail.com',
+      endpoint: 'hristo.zhelev@yahoo.com',
     });
 
     const processFileFunction = new NodejsFunction(this, 'processFunction', {
