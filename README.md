@@ -18,9 +18,9 @@ This is a project fulfilling the regular exam assigment for the [AWS Essentials 
 - `npx cdk synth` emits the synthesized CloudFormation template
 - `npm run format` - run linting and formatting
 
-# API Gateway Endpoints
+## API Gateway Endpoints
 
-## 1. **GET /files**
+### 1. **GET /files**
 
 - **URL:**  
   `https://enilzoplee.execute-api.eu-central-1.amazonaws.com/prod/processFile?extension={extension}`  
@@ -34,7 +34,7 @@ This is a project fulfilling the regular exam assigment for the [AWS Essentials 
 
 ---
 
-## 2. **POST /files**
+### 2. **POST /files**
 
 - **URL:**  
   `https://enilzoplee.execute-api.eu-central-1.amazonaws.com/prod/processFile/files`  
