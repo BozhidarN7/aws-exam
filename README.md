@@ -18,6 +18,11 @@ This is a project fulfilling the regular exam assigment for the [AWS Essentials 
 - `npx cdk synth` emits the synthesized CloudFormation template
 - `npm run format` - run linting and formatting
 
+## EC2 information
+
+- Public IPv4 address - [18.184.28.246](http://18.184.28.246/)
+- Public IPv4 DNS - https://ec2-18-184-28-246.eu-central-1.compute.amazonaws.com/
+
 ## API Gateway Endpoints
 
 ### 1. **GET /files**
