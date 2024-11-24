@@ -1,0 +1,912 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SQS Queue Created 1`] = `
+{
+  "Outputs": {
+    "ProcesssFilesApiEndpoint7652733F": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "ProcesssFilesApi61444C92",
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "ProcesssFilesApiDeploymentStageprod8DA8EE29",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+    "RESTApiEndpoint": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "ProcesssFilesApi61444C92",
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "ProcesssFilesApiDeploymentStageprod8DA8EE29",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Resources": {
+    "FilesSubscriptionF0622C98": {
+      "Properties": {
+        "Endpoint": "bojonemski@gmail.com",
+        "Protocol": "email",
+        "TopicArn": {
+          "Ref": "FilesTopicFE24EE06",
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+    "FilesTable1399FAA4": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S",
+          },
+          {
+            "AttributeName": "fileExtension",
+            "AttributeType": "S",
+          },
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "ExtensionIndexNew",
+            "KeySchema": [
+              {
+                "AttributeName": "fileExtension",
+                "KeyType": "HASH",
+              },
+            ],
+            "Projection": {
+              "ProjectionType": "ALL",
+            },
+          },
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH",
+          },
+        ],
+        "StreamSpecification": {
+          "StreamViewType": "NEW_AND_OLD_IMAGES",
+        },
+        "TimeToLiveSpecification": {
+          "AttributeName": "ttl",
+          "Enabled": true,
+        },
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "FilesTopicFE24EE06": {
+      "Properties": {
+        "TopicName": "FilesTopic",
+      },
+      "Type": "AWS::SNS::Topic",
+    },
+    "ProcesssFilesApi61444C92": {
+      "Properties": {
+        "BinaryMediaTypes": [
+          "*/*",
+        ],
+        "Name": "ProcesssFilesApi",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "ProcesssFilesApiAccount94566B9B": {
+      "DeletionPolicy": "Retain",
+      "DependsOn": [
+        "ProcesssFilesApi61444C92",
+      ],
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "ProcesssFilesApiCloudWatchRole7134EE59",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ProcesssFilesApiCloudWatchRole7134EE59": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ProcesssFilesApiDeployment8F9EE8231856930e5529bf3837fbc60f8b384565": {
+      "DependsOn": [
+        "ProcesssFilesApiprocessFileGET29004EE8",
+        "ProcesssFilesApiprocessFileOPTIONSD702F900",
+        "ProcesssFilesApiprocessFilePOST13A790AB",
+        "ProcesssFilesApiprocessFile2A4F5717",
+      ],
+      "Properties": {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": {
+          "Ref": "ProcesssFilesApi61444C92",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "ProcesssFilesApiDeploymentStageprod8DA8EE29": {
+      "DependsOn": [
+        "ProcesssFilesApiAccount94566B9B",
+      ],
+      "Properties": {
+        "DeploymentId": {
+          "Ref": "ProcesssFilesApiDeployment8F9EE8231856930e5529bf3837fbc60f8b384565",
+        },
+        "RestApiId": {
+          "Ref": "ProcesssFilesApi61444C92",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "ProcesssFilesApiprocessFile2A4F5717": {
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ProcesssFilesApi61444C92",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "processFile",
+        "RestApiId": {
+          "Ref": "ProcesssFilesApi61444C92",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "ProcesssFilesApiprocessFileGET29004EE8": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "getAllFilesByGivenExtensionFunctionDB009C14",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "ProcesssFilesApiprocessFile2A4F5717",
+        },
+        "RestApiId": {
+          "Ref": "ProcesssFilesApi61444C92",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "ProcesssFilesApiprocessFileGETApiPermissionMyTestStackProcesssFilesApi387DE652GETprocessFile1C414AE1": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "getAllFilesByGivenExtensionFunctionDB009C14",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "ProcesssFilesApi61444C92",
+              },
+              "/",
+              {
+                "Ref": "ProcesssFilesApiDeploymentStageprod8DA8EE29",
+              },
+              "/GET/processFile",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "ProcesssFilesApiprocessFileGETApiPermissionTestMyTestStackProcesssFilesApi387DE652GETprocessFile1C5EEBF0": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "getAllFilesByGivenExtensionFunctionDB009C14",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "ProcesssFilesApi61444C92",
+              },
+              "/test-invoke-stage/GET/processFile",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "ProcesssFilesApiprocessFileOPTIONSD702F900": {
+      "Properties": {
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'POST'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "ProcesssFilesApiprocessFile2A4F5717",
+        },
+        "RestApiId": {
+          "Ref": "ProcesssFilesApi61444C92",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "ProcesssFilesApiprocessFilePOST13A790AB": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "POST",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "processFunction0BCCD85F",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": {
+          "Ref": "ProcesssFilesApiprocessFile2A4F5717",
+        },
+        "RestApiId": {
+          "Ref": "ProcesssFilesApi61444C92",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "ProcesssFilesApiprocessFilePOSTApiPermissionMyTestStackProcesssFilesApi387DE652POSTprocessFileFFC32F2C": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "processFunction0BCCD85F",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "ProcesssFilesApi61444C92",
+              },
+              "/",
+              {
+                "Ref": "ProcesssFilesApiDeploymentStageprod8DA8EE29",
+              },
+              "/POST/processFile",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "ProcesssFilesApiprocessFilePOSTApiPermissionTestMyTestStackProcesssFilesApi387DE652POSTprocessFile112F7AFB": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "processFunction0BCCD85F",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              {
+                "Ref": "ProcesssFilesApi61444C92",
+              },
+              "/test-invoke-stage/POST/processFile",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "cleanupFunction808DE61E": {
+      "DependsOn": [
+        "cleanupFunctionServiceRoleDefaultPolicy8DA0A82F",
+        "cleanupFunctionServiceRoleF2D5398B",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "b3fe00be9da27d3a7edc3ab1469e234e5ce727783f718b9627282cd016ff83c4.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": {
+              "Ref": "FilesTable1399FAA4",
+            },
+            "TOPIC_ARN": {
+              "Ref": "FilesTopicFE24EE06",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "cleanupFunctionServiceRoleF2D5398B",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs20.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "cleanupFunctionDynamoDBEventSourceMyTestStackFilesTable84EA3ED803E582B4": {
+      "Properties": {
+        "BatchSize": 5,
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "FilesTable1399FAA4",
+            "StreamArn",
+          ],
+        },
+        "FilterCriteria": {
+          "Filters": [
+            {
+              "Pattern": "{"eventName":["REMOVE"]}",
+            },
+          ],
+        },
+        "FunctionName": {
+          "Ref": "cleanupFunction808DE61E",
+        },
+        "StartingPosition": "LATEST",
+      },
+      "Type": "AWS::Lambda::EventSourceMapping",
+    },
+    "cleanupFunctionServiceRoleDefaultPolicy8DA0A82F": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "FilesTable1399FAA4",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "FilesTable1399FAA4",
+                          "Arn",
+                        ],
+                      },
+                      "/index/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "FilesTopicFE24EE06",
+              },
+            },
+            {
+              "Action": "dynamodb:ListStreams",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "dynamodb:DescribeStream",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FilesTable1399FAA4",
+                  "StreamArn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "cleanupFunctionServiceRoleDefaultPolicy8DA0A82F",
+        "Roles": [
+          {
+            "Ref": "cleanupFunctionServiceRoleF2D5398B",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "cleanupFunctionServiceRoleF2D5398B": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "getAllFilesByGivenExtensionFunctionDB009C14": {
+      "DependsOn": [
+        "getAllFilesByGivenExtensionFunctionServiceRoleDefaultPolicy47C32B55",
+        "getAllFilesByGivenExtensionFunctionServiceRoleCD6B7F9F",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "2deaf75b2d8dcc5183408863a40d614a79577fd01246c7d149b7577ce5ba65f2.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": {
+              "Ref": "FilesTable1399FAA4",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "getAllFilesByGivenExtensionFunctionServiceRoleCD6B7F9F",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs20.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "getAllFilesByGivenExtensionFunctionServiceRoleCD6B7F9F": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "getAllFilesByGivenExtensionFunctionServiceRoleDefaultPolicy47C32B55": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "FilesTable1399FAA4",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "FilesTable1399FAA4",
+                          "Arn",
+                        ],
+                      },
+                      "/index/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "getAllFilesByGivenExtensionFunctionServiceRoleDefaultPolicy47C32B55",
+        "Roles": [
+          {
+            "Ref": "getAllFilesByGivenExtensionFunctionServiceRoleCD6B7F9F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "processFunction0BCCD85F": {
+      "DependsOn": [
+        "processFunctionServiceRoleDefaultPolicyE4A30A49",
+        "processFunctionServiceRole043D3FAD",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "fb20fb71098358da0b1b739c906eb3004df11d8bb310aad78823a452afd26b12.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": {
+              "Ref": "FilesTable1399FAA4",
+            },
+            "TOPIC_ARN": {
+              "Ref": "FilesTopicFE24EE06",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "processFunctionServiceRole043D3FAD",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs20.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "processFunctionServiceRole043D3FAD": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "processFunctionServiceRoleDefaultPolicyE4A30A49": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "FilesTable1399FAA4",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "FilesTable1399FAA4",
+                          "Arn",
+                        ],
+                      },
+                      "/index/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Resource": {
+                "Ref": "FilesTopicFE24EE06",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "processFunctionServiceRoleDefaultPolicyE4A30A49",
+        "Roles": [
+          {
+            "Ref": "processFunctionServiceRole043D3FAD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;
